@@ -16,6 +16,11 @@ Route::get('/', function () {
     return view('home');
 })->name('home');
 
+Route::get('/profile/{nama}', function ($nama) {
+    return "Halo, $nama";
+});
+
+
 /**
  * ROUTE GROUP (prefix + name prefix)
  * blog.index => /blog
