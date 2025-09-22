@@ -1,67 +1,40 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PageController;
+use App\Http\Controllers\AdminDashboardController;
 
-/**
- * ROUTE DASAR + NAMED ROUTE
- */
-Route::get('/', function () {
-    return view('home');
-})->name('home');
-
-Route::get('/about', [PageController::class, 'about'])->name('about');
 
 Route::get('/', function () {
-    return view('home');
+    return view('welcome');
 })->name('home');
 
-Route::get('/profile/{nama}', function ($nama) {
-    return "Halo, $nama";
+Route::get('/blog', function () {
+    // nanti bisa diganti pakai controller
+    return view('blog.index');  // pastikan view-nya ada di resources/views/blog/index.blade.php
+})->name('blog.index');
+
+Route::get('/hello', function () {
+    return 'Hello World'; // bisa diganti ke view
+})->name('hello');
+
+Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])
+    ->name('admin.dashboard');
+
+
+Route::get('/about', function () {
+    return view('about');  // pastikan ada resources/views/about.blade.php
+})->name('about');
+
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-
-/**
- * ROUTE GROUP (prefix + name prefix)
- * blog.index => /blog
- * blog.show  => /blog/{slug}
- */
-Route::prefix('blog')->name('blog.')->group(function () {
-    Route::get('/', [PageController::class, 'blogIndex'])->name('index');
-
-    Route::get('/{slug}', [PageController::class, 'blogShow'])
-        ->where('slug', '[A-Za-z0-9-]+') // validasi parameter
-        ->name('show');
-});
-
-/**
- * PARAMETER OPSIONAL + VALIDASI
- * /hello        -> "Tamu"
- * /hello/Haikal -> "Haikal"
- */
-Route::get('/hello/{name?}', [PageController::class, 'hello'])
-    ->whereAlpha('name')
-    ->name('hello');
-
-/**
- * ROUTE GROUP LAIN (ADMIN)
- * Menunjukkan prefix & name prefix sekaligus parameter numerik
- */
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('dashboard');
-
-    Route::get('/posts/{id}', function (int $id) {
-        return view('admin.post', ['id' => $id]);
-    })->whereNumber('id')->name('posts.show');
-});
-
-/**
- * REDIRECT & FALLBACK
- */
-Route::redirect('/home', '/')->name('redirect.home');
-
-Route::fallback(function () {
-    return response()->view('errors.404', [], 404);
-});
+require __DIR__.'/auth.php';
