@@ -4,6 +4,14 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminDashboardController;
 
+use App\Http\Controllers\ProductController;
+use App\Http\Middleware\RoleCheck;
+
+Route::middleware(['auth','role:admin,owner'])->group(function () {
+    Route::get('/product/{angka}', [ProductController::class, 'index'])
+        ->name('product.index');
+});
+
 
 Route::get('/', function () {
     return view('welcome');

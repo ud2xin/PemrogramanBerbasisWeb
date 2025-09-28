@@ -6,7 +6,8 @@ use App\Http\Controllers\ProductController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');   // ← tambahkan ini
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');

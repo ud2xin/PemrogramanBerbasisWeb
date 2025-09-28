@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+
+Route::get('/route_count/{id}', [ProductController::class, 'show']);
 
 Route::get('/', function () {
     return view('welcome');
