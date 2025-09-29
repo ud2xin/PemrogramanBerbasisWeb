@@ -1,8 +1,12 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UTSController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/uts', [UTSController::class, 'index']);
+Route::get('/uts/pemrograman-web', [UTSController::class, 'pemrogramanWeb']);
+Route::get('/uts/database', [UTSController::class, 'database']);
 Route::get('/', function () {
     return view('welcome');
 });
