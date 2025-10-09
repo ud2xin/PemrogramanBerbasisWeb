@@ -17,13 +17,15 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
+Route::get('/produk/{nilai}', [ProductController::class, 'index']);
+
 Route::get('/blog', function () {
-    // nanti bisa diganti pakai controller
-    return view('blog.index');  // pastikan view-nya ada di resources/views/blog/index.blade.php
+
+    return view('blog.index');
 })->name('blog.index');
 
 Route::get('/hello', function () {
-    return 'Hello World'; // bisa diganti ke view
+    return 'Hello World';
 })->name('hello');
 
 Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])
@@ -31,7 +33,7 @@ Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])
 
 
 Route::get('/about', function () {
-    return view('about');  // pastikan ada resources/views/about.blade.php
+    return view('about');
 })->name('about');
 
 
